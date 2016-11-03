@@ -1,0 +1,16 @@
+# windows support
+$RECYCLE.BIN
+
+# mac support
+.DS_Store
+
+
+# files
+*~
+*.swp
+*.swo
+
+
+# directory
+node_modules/
+
