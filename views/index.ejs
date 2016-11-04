@@ -31,7 +31,7 @@
         </div>
         <script>
             // initialize the map one the map div with given center and zoom
-            const map = L.map('map').setView([1.27511, 103.79846], 12)
+            const map = L.map('map', {positionControl: true}).setView([1.27511, 103.79846], 12)
 
             const gMap = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
                 maxZoom: 19,
@@ -43,33 +43,47 @@
                 bingMapsKey: 'As2dRWl4EwepwvBD7gE3_NQWGfa3noo3kSMkX-a09MhV7wjxYo-rAAf_aQISREg8'
             })
 
+            const oseamap = L.tileLayer('http://tiles.openseamap.org/seamark/{z}/{x}/{y}.png');
+
             gMap.addTo(map);
+            oseamap.addTo(map);
 
             const baseMap = {
                 "Google Map": gMap,
                 "Bing Map": bingmap
             }
 
-            const layerControl = L.control.layers(baseMap).addTo(map);
+            const overlayMaps = {
+                "Marine Map": oseamap
+            }
+
+
+            L.Util.setOptions(map, {
+                positionControl: true
+            })
+
+            const layerControl = L.control.layers(baseMap, overlayMaps).addTo(map);
 
             L.control.mousePosition({
                 position: "bottomright",
                 //emptyString: "",
-                emptyString: '0ยบ N<br>0ยบ E',
+                emptyString: '0&deg; N<br>0&deg; E',
                 separator: '<br>',
                 lngFormatter: function(num) {
                   var direction = (num < 0) ? 'W' : 'E';
-                  var formatted = Math.abs(L.Util.formatNum(num, 3)) + 'ยบ ' + direction;
+                  var formatted = Math.abs(L.Util.formatNum(num, 3)) + '&deg; ' + direction;
                   return formatted;
                 },
                 latFormatter: function(num) {
                   var direction = (num < 0) ? 'S' : 'N';
-                  var formatted = Math.abs(L.Util.formatNum(num, 3)) + 'ยบ ' + direction;
+                  var formatted = Math.abs(L.Util.formatNum(num, 3)) + '&deg; ' + direction;
                   return formatted;
                 },
                 lngFirst: !1,
                 numDigits: 5
             }).addTo(map);
+
+
 
             // L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
             //     maxZoom: 18,
