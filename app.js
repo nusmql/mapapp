@@ -4,10 +4,20 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
+const Beer = require('./models/beer')
+
+
+
+mongoose.connect('mongodb://accountUser:password@192.168.68.201:27017/bwplatform')
+
+
+// define all the route
 var index = require('./routes/index');
 var users = require('./routes/users');
 var map = require('./routes/map');
+var api = require('./routes/api')
 
 var app = express();
 
@@ -32,6 +42,9 @@ app.use('/node_modules/leaflet-bing-layer', express.static(path.join(__dirname +
 app.use('/', index);
 app.use('/users', users);
 app.use('/map', map);
+app.use('/api', api);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
